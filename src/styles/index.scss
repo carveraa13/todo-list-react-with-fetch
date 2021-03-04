@@ -1,5 +1,25 @@
 @import "~bootstrap/scss/bootstrap.scss";
 
+.cardtodos {
+    width: 25rem !important;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;    
+}
+
+.btn {
+    visibility: hidden;
+}
+
+.list-group-item:hover :nth-child(1) {
+    visibility: visible !important; 
+}
+h1{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 80px;
+}
+
 /* 
 
     You can write your own styles here...

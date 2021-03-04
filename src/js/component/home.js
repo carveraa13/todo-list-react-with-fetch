@@ -1,24 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+let todos = ["Make the bed", "Wash my hands", "Eat", "Walk the dog"];
 
-//create your first component
 export function Home() {
+	const [inputValue, setInputValue] = useState("");
+	const [addToArray, setAddToArray] = useState(todos);
+
+	const addTodo = e => {
+		if (e.key == "Enter") {
+			if (inputValue !== "") {
+				const todosNew = addToArray.concat(inputValue);
+				setAddToArray(todosNew);
+				setInputValue("");
+			} else alert("Insert a task");
+		}
+	};
+	function removeTodo(task) {
+		const removeItem = addToArray.filter(item => item !== task);
+		setAddToArray(removeItem);
+	}
+	const Todolist = () => {
+		if (addToArray.length > 0) {
+			return (
+				<div>
+					<ul className="list-group">
+						{addToArray.map(item => (
+							<li
+								className="list-group-item d-flex justify-content-between align-items-center"
+								key={item}>
+								{item}
+								<button
+									onClick={() => removeTodo(item)}
+									className="btn btn-link">
+									<i className="fas fa-times"></i>
+								</button>
+							</li>
+						))}
+					</ul>
+					<span className="float-left text-muted mt-2">
+						{addToArray.length} item left
+					</span>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					<p>No tasks, add a task</p>
+				</div>
+			);
+		}
+	};
 	return (
-		<div className="text-center mt-5">
-			<h1>Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+		<div className="text-center mt-5 justify-content-center">
+			<h1>TODOS</h1>
+			<div className="card cardtodos mx-auto">
+				<div className="card-body">
+					<div className="input-group mb-3 input-group-lg">
+						<input
+							type="text"
+							className="form-control"
+							placeholder="What do you need?"
+							value={inputValue}
+							onChange={e => setInputValue(e.target.value)}
+							onKeyUp={addTodo}
+						/>
+					</div>
+					<Todolist />
+				</div>
+			</div>
 		</div>
 	);
 }
