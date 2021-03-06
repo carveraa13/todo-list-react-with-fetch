@@ -15,15 +15,15 @@ export function Home() {
 			} else alert("Insert a task");
 		}
 	};
-	function removeTodo(task) {
+	const removeTodo = task => {
 		const removeItem = addToArray.filter(item => item !== task);
 		setAddToArray(removeItem);
-	}
+	};
 	const Todolist = () => {
 		if (addToArray.length > 0) {
 			return (
 				<div>
-					<ul className="list-group">
+					<ul className="list-group list-group-flush">
 						{addToArray.map(item => (
 							<li
 								className="list-group-item d-flex justify-content-between align-items-center"
@@ -37,9 +37,10 @@ export function Home() {
 							</li>
 						))}
 					</ul>
-					<span className="float-left text-muted mt-2">
+					<hr className="solid" />
+					<div className="float-left text-muted mt-2">
 						{addToArray.length} item left
-					</span>
+					</div>
 				</div>
 			);
 		} else {
@@ -51,8 +52,8 @@ export function Home() {
 		}
 	};
 	return (
-		<div className="text-center mt-5 justify-content-center">
-			<h1>TODOS</h1>
+		<div className="container text-center mt-5 justify-content-center">
+			<h1>todos</h1>
 			<div className="card cardtodos mx-auto">
 				<div className="card-body">
 					<div className="input-group mb-3 input-group-lg">
