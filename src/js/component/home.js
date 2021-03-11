@@ -1,36 +1,135 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+// import { useEffect } from "react/cjs/react.production.min";
 
-let todos = ["Make the bed", "Wash my hands", "Eat", "Walk the dog"];
+// let todos = [];
 
 export function Home() {
+	const [todos, setTodos] = useState([]);
+
+	useEffect(() => {
+		getAPI();
+	}, []);
+
+	const getAPI = () => {
+		let todoLink =
+			"https://assets.breatheco.de/apis/fake/todos/user/carveraa13";
+
+		const fetchTodo = async () => {
+			let todosList = await fetch(todoLink, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				}
+			})
+				.then(resp => {
+					if (resp.status == 404) {
+						createAPI();
+					} else {
+						return resp.json();
+					}
+				})
+				.then(data => setTodos(data))
+				.catch(error => console.log(error));
+		};
+		fetchTodo();
+	};
+
+	const createAPI = () => {
+		let todoLink =
+			"https://assets.breatheco.de/apis/fake/todos/user/carveraa13";
+		// console.log(newData);
+		const fetchTodo = async () => {
+			let todosList = await fetch(todoLink, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify([])
+			})
+				.then(resp => {
+					if (resp.status == 200) {
+						getAPI();
+					}
+				})
+				.then(data => console.log(data))
+				.catch(error => console.log(error));
+		};
+		fetchTodo();
+	};
+
+	const updateAPI = newData => {
+		let todoLink =
+			"https://assets.breatheco.de/apis/fake/todos/user/carveraa13";
+		// console.log(newData);
+		const fetchTodo = async () => {
+			let todosList = await fetch(todoLink, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(newData)
+			})
+				.then(resp => {
+					if (resp.status == 200) {
+						setTodos(newData);
+					}
+				})
+				.then(data => console.log(data))
+				.catch(error => console.log(error));
+		};
+		fetchTodo();
+	};
+
+	const deleteAPI = () => {
+		let todoLink =
+			"https://assets.breatheco.de/apis/fake/todos/user/carveraa13";
+		// console.log(newData);
+		const fetchTodo = async () => {
+			let todosList = await fetch(todoLink, {
+				method: "DELETE"
+			})
+				.then(resp => resp)
+				.then(data => console.log(data))
+				.catch(error => console.log(error));
+		};
+		fetchTodo();
+	};
+
 	const [inputValue, setInputValue] = useState("");
-	const [addToArray, setAddToArray] = useState(todos);
+	// const [addToArray, setAddToArray] = useState(todos);
 
 	const addTodo = e => {
 		if (e.key == "Enter") {
 			if (inputValue !== "") {
-				const todosNew = addToArray.concat(inputValue);
-				setAddToArray(todosNew);
+				const todosNew = todos.concat({
+					label: inputValue,
+					done: false
+				});
+				updateAPI(todosNew);
 				setInputValue("");
 			} else alert("Insert a task");
 		}
 	};
 	const removeTodo = task => {
-		const removeItem = addToArray.filter(item => item !== task);
-		setAddToArray(removeItem);
+		const removeItem = todos.filter(item => item.label !== task);
+		if (removeItem.length > 1) {
+			updateAPI(removeItem);
+		} else {
+			deleteAPI();
+		}
 	};
 	const Todolist = () => {
-		if (addToArray.length > 0) {
+		if (todos.length > 0) {
 			return (
 				<div>
 					<ul className="list-group list-group-flush">
-						{addToArray.map(item => (
+						{todos.map((item, index) => (
 							<li
 								className="list-group-item d-flex justify-content-between align-items-center"
-								key={item}>
-								{item}
+								key={index}>
+								{item.label}
 								<button
-									onClick={() => removeTodo(item)}
+									onClick={() => removeTodo(item.label)}
 									className="btn btn-link">
 									<i className="fas fa-times"></i>
 								</button>
@@ -39,7 +138,7 @@ export function Home() {
 					</ul>
 					<hr className="solid" />
 					<div className="float-left text-muted mt-2">
-						{addToArray.length} item left
+						{todos.length} item left
 					</div>
 				</div>
 			);
