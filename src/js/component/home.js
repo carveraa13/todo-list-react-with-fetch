@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { useEffect } from "react/cjs/react.production.min";
-
-// let todos = [];
 
 export function Home() {
 	const [todos, setTodos] = useState([]);
@@ -37,7 +34,7 @@ export function Home() {
 	const createAPI = () => {
 		let todoLink =
 			"https://assets.breatheco.de/apis/fake/todos/user/carveraa13";
-		// console.log(newData);
+
 		const fetchTodo = async () => {
 			let todosList = await fetch(todoLink, {
 				method: "POST",
@@ -60,7 +57,7 @@ export function Home() {
 	const updateAPI = newData => {
 		let todoLink =
 			"https://assets.breatheco.de/apis/fake/todos/user/carveraa13";
-		// console.log(newData);
+
 		const fetchTodo = async () => {
 			let todosList = await fetch(todoLink, {
 				method: "PUT",
@@ -83,7 +80,7 @@ export function Home() {
 	const deleteAPI = () => {
 		let todoLink =
 			"https://assets.breatheco.de/apis/fake/todos/user/carveraa13";
-		// console.log(newData);
+
 		const fetchTodo = async () => {
 			let todosList = await fetch(todoLink, {
 				method: "DELETE"
@@ -101,7 +98,6 @@ export function Home() {
 	};
 
 	const [inputValue, setInputValue] = useState("");
-	// const [addToArray, setAddToArray] = useState(todos);
 
 	const addTodo = e => {
 		if (e.key == "Enter") {
@@ -173,7 +169,9 @@ export function Home() {
 					<Todolist />
 				</div>
 				<div className="card-footer">
-					<button onClick={() => deleteAPI()}>Clear list</button>
+					<button type="button" onClick={() => deleteAPI()}>
+						Clear list
+					</button>
 				</div>
 			</div>
 		</div>
