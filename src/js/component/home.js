@@ -88,7 +88,12 @@ export function Home() {
 			let todosList = await fetch(todoLink, {
 				method: "DELETE"
 			})
-				.then(resp => resp)
+				.then(resp => {
+					if (resp.status == 200) {
+						setTodos([]);
+						return resp;
+					}
+				})
 				.then(data => console.log(data))
 				.catch(error => console.log(error));
 		};
@@ -112,7 +117,7 @@ export function Home() {
 	};
 	const removeTodo = task => {
 		const removeItem = todos.filter(item => item.label !== task);
-		if (removeItem.length > 1) {
+		if (removeItem.length > 0) {
 			updateAPI(removeItem);
 		} else {
 			deleteAPI();
@@ -166,6 +171,9 @@ export function Home() {
 						/>
 					</div>
 					<Todolist />
+				</div>
+				<div className="card-footer">
+					<button onClick={() => deleteAPI()}>Clear list</button>
 				</div>
 			</div>
 		</div>
